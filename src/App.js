@@ -5,16 +5,20 @@ import React, {Component} from 'react';
 
 class App extends Component{
   state ={animal:'cat'}
+  
   changeAnimal = (furbaby)  => {
     console.log(furbaby.target.name)
     let newAnimal = this.state.animal
     newAnimal = 'dog'
     
     console.log(furbaby.target.value)
-
     this.setState({animal: newAnimal})
   } 
   
+  counter = (event) => {
+
+  }
+
   render() {
       return(
         <div>
