@@ -7,8 +7,8 @@ class App extends Component{
   
   bossNames = ['Zac', 'Jo', 'Maria']
   cardStuff = [{name: 'Contact', link: 'http://contactpage.com'}, {name: 'Help', link: 'http://help.com'}]
-  luckyNums = ['1', '3', '4', '9']
-  unluckyNums = ['2', '5', '6','7','8','10']
+  luckyNums = [1, 3, 4, 9]
+  unluckyNums = [2, 5, 6,7,8,10]
 
   changeAnimal = (furbaby)  => {
     console.log(furbaby.target.name)
@@ -26,15 +26,17 @@ class App extends Component{
         newName = 'Boss ' + newName
       }
     })
-
+    console.log(event.target.value)
     this.setState({name: newName})
   }
 
   randomNumber = (event) => {
-    const num = String(Math.floor(Math.random() * 10) +1);
-    console.log(num);
+    const num = Math.floor(Math.random() * 10) +1;
+    // console.log(num);
+    console.log(num % 2 === 0)  
+    console.log(this.bossNames)
     this.setState({integer: num});   
-    // console.log(this.luckyNums);
+
   }
     
   
@@ -55,6 +57,22 @@ class App extends Component{
                     }
                   )
                 );
+    // const bossPlusName =  this.bossNames.map(name) => {
+    //   console.log('Boss ' + name)
+    //   return <div>'Boss ' + name</div>
+    // };
+    const specialCondition = (this.bossNames.includes(this.state.name.slice(5)) && (this.state.integer % 2===0)) ? 
+    null :  ((this.luckyNums.includes(this.state.integer)) ? (this.luckyNums.map((int,index) => {
+        return<div key={index} className='col'><Card key={index}><CardBody><CardTitle>{int}</CardTitle></CardBody></Card></div>;
+        }
+      )
+    ) : (this.unluckyNums.map((int,index) => {
+      return <div key={index} className='col'><Card key={index}><CardBody><CardTitle>{int}</CardTitle></CardBody></Card></div>;
+      }
+    )
+  ))
+    
+    
     
     return(
         <div>
@@ -71,7 +89,7 @@ class App extends Component{
           <strong>Your number is {this.state.integer}</strong>
             <div className='container'>
               <div className='row'>
-                {lucky}
+                {specialCondition}
               </div>
               <div className='row'>
                 <Input placeholder='Enter your name' onChange={(name) => this.changeName(name)}>
