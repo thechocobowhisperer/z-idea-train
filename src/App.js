@@ -1,13 +1,14 @@
 import './App.css';
-import {Button, Input, Card, CardBody} from 'reactstrap';
-
+import {Button, Input, Card, CardBody, CardTitle} from 'reactstrap';
 import React, {Component} from 'react';
 
 class App extends Component{
-  state ={animal:'cat', name: ''}
+  state ={animal:'cat', name: '', integer: ''}
   
   bossNames = ['Zac', 'Jo', 'Maria']
   cardStuff = [{name: 'Contact', link: 'http://contactpage.com'}, {name: 'Help', link: 'http://help.com'}]
+  luckyNums = ['1', '3', '4', '9']
+  unluckyNums = ['2', '5', '6','7','8','10']
 
   changeAnimal = (furbaby)  => {
     console.log(furbaby.target.name)
@@ -29,13 +30,33 @@ class App extends Component{
     this.setState({name: newName})
   }
 
+  randomNumber = (event) => {
+    const num = String(Math.floor(Math.random() * 10) +1);
+    console.log(num);
+    this.setState({integer: num});   
+    // console.log(this.luckyNums);
+  }
+    
+  
+
+
   render() {
     console.log('I get rendered every single time!')
     const links = (this.state.name !== 'baby') ? (this.cardStuff.map((info, index) =>{
-      return <Card key={index}><div className='row'><div className='col-4'><strong>{info.name}</strong> :</div> <div className='col-4'></div>{info.link}</div></Card>
-    })) : null
-
-      return(
+      return <Card key={index}><div className='row'><div className='col-2'><strong>{info.name}</strong> :</div> <div className='col-2'></div>{info.link}</div></Card>
+    })) : null;
+    
+   const lucky = (this.luckyNums.includes(this.state.integer)) ? (this.luckyNums.map((int,index) => {
+                      return<div key={index} className='col'><Card key={index}><CardBody><CardTitle>{int}</CardTitle></CardBody></Card></div>;
+                      }
+                    )
+                  ) : (this.unluckyNums.map((int,index) => {
+                    return <div key={index} className='col'><Card key={index}><CardBody><CardTitle>{int}</CardTitle></CardBody></Card></div>;
+                    }
+                  )
+                );
+    
+    return(
         <div>
           <h2>You are a {this.state.animal} lover. How wonderful!</h2>
           <Button color="primary" onClick={(dog) => this.changeAnimal(dog)}>
@@ -44,6 +65,19 @@ class App extends Component{
           <p>Hello, {this.state.name}.</p>
           <Input onChange={(event) => this.changeName(event)}/> 
           {links}
+          <Button color='success' onClick={(number) => this.randomNumber(number)}>
+            Try your luck!
+          </Button>
+          <strong>Your number is {this.state.integer}</strong>
+            <div className='container'>
+              <div className='row'>
+                {lucky}
+              </div>
+              <div className='row'>
+                <Input placeholder='Enter your name' onChange={(name) => this.changeName(name)}>
+                </Input>
+              </div>
+            </div>
         </div>
       );
   };
